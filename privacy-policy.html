@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy - True Job Fit</title>
+<meta name="description" content="Privacy policy for the True Job Fit Chrome extension.">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: #1e293b;
+  background: #f8fafc;
+  line-height: 1.7;
+}
+
+.container {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+.back-link {
+  display: inline-block;
+  color: #2a4f7a;
+  text-decoration: none;
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+.back-link:hover { text-decoration: underline; }
+
+h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e3a5f;
+  margin-bottom: 8px;
+}
+
+.updated {
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 32px;
+}
+
+.intro {
+  font-size: 16px;
+  color: #475569;
+  margin-bottom: 32px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+h2 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1e3a5f;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+p {
+  font-size: 15px;
+  color: #334155;
+  margin-bottom: 16px;
+}
+
+ul {
+  margin: 0 0 16px 24px;
+  font-size: 15px;
+  color: #334155;
+}
+ul li { margin-bottom: 6px; }
+
+code {
+  background: #f1f5f9;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 13px;
+  color: #475569;
+}
+
+.compliance {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 24px 0;
+  font-size: 14px;
+  color: #0c4a6e;
+}
+
+.footer {
+  margin-top: 48px;
+  padding-top: 24px;
+  border-top: 1px solid #e2e8f0;
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+a { color: #2a4f7a; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<a href="/" class="back-link">← Back to True Job Fit</a>
+
+<h1>Privacy Policy</h1>
+<p class="updated">Last updated: March 2026</p>
+
+<p class="intro">True Job Fit is a Chrome extension that scores how well your CV matches LinkedIn job listings. This policy explains what data the extension handles, where it goes, and what it does not do.</p>
+
+<h2>Data storage</h2>
+<p>True Job Fit stores all data locally in your browser using <code>chrome.storage.local</code>. This includes:</p>
+<ul>
+  <li>Your parsed CV profile and raw CV text</li>
+  <li>Your API key (OpenAI or Anthropic)</li>
+  <li>Tracked jobs, application statuses, and notes</li>
+  <li>Analysis cache (cached match results for previously viewed jobs)</li>
+  <li>Cover letters and interview prep data</li>
+  <li>Usage statistics (analysis count, weekly stats) — stored locally only</li>
+  <li>Extension preferences (model selection, panel state, cover letter preferences)</li>
+</ul>
+<p>None of this data is transmitted to any server controlled by True Job Fit. There is no True Job Fit backend, database, or cloud storage.</p>
+
+<h2>API calls to AI providers</h2>
+<p>When you analyse a job listing, generate a cover letter, request gap coaching, or generate interview prep, True Job Fit sends your CV profile and the job description text to the AI provider you have selected. True Job Fit supports two providers:</p>
+<ul>
+  <li><strong>OpenAI</strong> — requests are sent to <code>api.openai.com</code>, subject to <a href="https://openai.com/privacy" target="_blank" rel="noopener">OpenAI's privacy policy</a></li>
+  <li><strong>Anthropic</strong> — requests are sent to <code>api.anthropic.com</code>, subject to <a href="https://www.anthropic.com/privacy" target="_blank" rel="noopener">Anthropic's privacy policy</a></li>
+</ul>
+<p>These requests:</p>
+<ul>
+  <li>Use your own API key — True Job Fit does not proxy, log, or intercept these calls</li>
+  <li>Are made directly from your browser to the provider's servers</li>
+  <li>Contain your CV profile text and the job description text necessary for analysis</li>
+  <li>Do not contain your name, email address, or API key in the request body</li>
+</ul>
+<p>True Job Fit does not store, transmit, or have access to your API key on any external server. Your API key is stored only in your browser's local storage.</p>
+
+<h2>No analytics, tracking, or telemetry</h2>
+<p>True Job Fit does not use any external analytics services, telemetry, crash reporting, or usage tracking. No data about how you use the extension is sent to any server. Usage statistics (such as the number of jobs analysed per week) are stored locally in your browser for your own reference and are never transmitted externally.</p>
+
+<h2>No advertisements</h2>
+<p>True Job Fit does not display advertisements and is not affiliated with any advertising network.</p>
+
+<h2>Third-party services</h2>
+<p>The only external services True Job Fit communicates with are:</p>
+<ul>
+  <li><strong>OpenAI API</strong> (<code>api.openai.com</code>) — when OpenAI is selected as your AI provider</li>
+  <li><strong>Anthropic API</strong> (<code>api.anthropic.com</code>) — when Anthropic is selected as your AI provider</li>
+</ul>
+<p>Communication occurs only when you explicitly trigger an analysis, cover letter generation, gap coaching reframe, or interview prep generation. No other third-party services are used.</p>
+
+<h2>LinkedIn page content</h2>
+<p>True Job Fit reads the content of LinkedIn job listing pages in your browser to extract the job description, title, company name, and location. This content is used locally for analysis and is sent to your selected AI provider as described above. True Job Fit does not scrape LinkedIn at scale, automate any actions on LinkedIn, or collect data from pages other than the job listing you are currently viewing.</p>
+
+<h2>Data deletion</h2>
+<p>You can delete all locally stored data at any time by:</p>
+<ul>
+  <li>Clicking <strong>Clear Profile</strong> in the extension popup to remove your CV data</li>
+  <li>Clicking <strong>Clear Cache</strong> in the extension popup to remove cached analyses</li>
+  <li>Removing the extension from Chrome, which deletes all stored data automatically</li>
+</ul>
+
+<h2>Children's privacy</h2>
+<p>True Job Fit is not directed at children under 13 and does not knowingly collect data from children.</p>
+
+<h2>Changes to this policy</h2>
+<p>If this policy is updated, the revision date at the top of this page will be changed. Continued use of the extension after changes constitutes acceptance of the updated policy.</p>
+
+<div class="compliance">
+  The use of information received from Google APIs will adhere to the <a href="https://developer.chrome.com/docs/webstore/program-policies/user-data-faq" target="_blank" rel="noopener">Chrome Web Store User Data Policy</a>, including the Limited Use requirements.
+</div>
+
+<h2>Contact</h2>
+<p>For questions about this privacy policy, contact: <a href="mailto:hello@truejob.fit">hello@truejob.fit</a></p>
+
+<div class="footer">
+  <p>True Job Fit is an independent Chrome extension. It is not affiliated with LinkedIn, OpenAI, or Anthropic.</p>
+</div>
+
+</div>
+</body>
+</html>
