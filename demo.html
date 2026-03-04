@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Demo — True Job Fit</title>
+<meta name="description" content="See how True Job Fit scores a real job against a sample CV. Pick a role type to see your match score, gap coaching, and salary estimate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy:       #1e3a5f;
+  --navy-deep:  #0f2440;
+  --navy-light: #2a4f7a;
+  --amber:      #f59e0b;
+  --amber-dark: #d97706;
+  --green:      #16a34a;
+  --green-light:#dcfce7;
+  --red:        #dc2626;
+  --red-light:  #fee2e2;
+  --slate-50:   #f8fafc;
+  --slate-100:  #f1f5f9;
+  --slate-200:  #e2e8f0;
+  --slate-300:  #cbd5e1;
+  --slate-400:  #94a3b8;
+  --slate-500:  #64748b;
+  --slate-600:  #475569;
+  --slate-700:  #334155;
+  --slate-800:  #1e293b;
+  --slate-900:  #0f172a;
+  --white:      #ffffff;
+  --font-body:  'DM Sans', -apple-system, sans-serif;
+  --font-mono:  'DM Mono', monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--slate-800);
+  background: var(--slate-50);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  padding-bottom: 72px; /* space for sticky banner */
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--slate-200);
+  transition: box-shadow 0.3s;
+}
+.nav.scrolled { box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+.nav-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  height: 56px; display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand {
+  display: flex; align-items: center; gap: 10px;
+  font-weight: 700; font-size: 18px; color: var(--navy); text-decoration: none;
+}
+.nav-badge {
+  width: 28px; height: 28px; background: var(--navy); border-radius: 7px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+}
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a {
+  font-size: 14px; color: var(--slate-600); text-decoration: none;
+  font-weight: 500; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--navy); }
+.btn-cta {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--navy); color: var(--white);
+  padding: 10px 22px; border-radius: 8px;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: background 0.2s, transform 0.15s; border: none; cursor: pointer;
+}
+.btn-cta:hover { background: var(--navy-light); transform: translateY(-1px); color: var(--white); }
+
+/* ─── PAGE HEADER ─── */
+.page-header {
+  padding: 88px 24px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.page-header-eyebrow {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 700; color: var(--navy);
+  background: rgba(30,58,95,0.07); padding: 5px 14px;
+  border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.page-header h1 {
+  font-size: clamp(24px, 3vw, 34px); font-weight: 700;
+  color: var(--navy-deep); letter-spacing: -0.3px; margin-bottom: 8px;
+}
+.page-header p {
+  font-size: 15px; color: var(--slate-500); max-width: 560px;
+}
+
+/* ─── ROLE PICKER ─── */
+.role-picker-wrap {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px 24px;
+}
+.role-picker {
+  display: flex; gap: 10px; flex-wrap: wrap;
+}
+.role-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 999px; cursor: pointer;
+  font-size: 14px; font-weight: 600; border: 1.5px solid var(--slate-300);
+  background: var(--white); color: var(--slate-600);
+  transition: all 0.15s; white-space: nowrap; font-family: var(--font-body);
+}
+.role-pill:hover { border-color: var(--navy); color: var(--navy); }
+.role-pill.active {
+  background: var(--navy); color: var(--white); border-color: var(--navy);
+}
+.role-pill-emoji {
+  font-family: "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif;
+  font-size: 16px; line-height: 1;
+}
+
+/* ─── DEMO GRID ─── */
+.demo-grid {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: grid; grid-template-columns: 55fr 45fr; gap: 24px;
+  align-items: start;
+}
+
+/* ─── JOB CARD ─── */
+.job-card {
+  background: var(--white); border: 1px solid var(--slate-200);
+  border-radius: 12px; overflow: hidden;
+}
+.job-card-header {
+  padding: 24px 24px 20px;
+  border-bottom: 1px solid var(--slate-100);
+}
+.job-title {
+  font-size: 20px; font-weight: 700; color: var(--slate-900);
+  margin-bottom: 6px; line-height: 1.3;
+}
+.job-meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 10px;
+}
+.job-company {
+  font-size: 15px; font-weight: 600; color: var(--navy);
+}
+.job-sep { color: var(--slate-300); }
+.job-location { font-size: 14px; color: var(--slate-500); }
+.job-badges { display: flex; gap: 6px; flex-wrap: wrap; }
+.job-badge {
+  font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 4px;
+  letter-spacing: 0.3px;
+}
+.badge-remote   { background: #dcfce7; color: #15803d; }
+.badge-hybrid   { background: #fef3c7; color: #92400e; }
+.badge-onsite   { background: #f1f5f9; color: var(--slate-600); }
+.badge-location { background: var(--slate-100); color: var(--slate-600); }
+
+.job-description {
+  padding: 20px 24px;
+  max-height: 520px; overflow-y: auto;
+  font-size: 14px; color: var(--slate-600); line-height: 1.7;
+}
+.job-description::-webkit-scrollbar { width: 4px; }
+.job-description::-webkit-scrollbar-track { background: transparent; }
+.job-description::-webkit-scrollbar-thumb { background: var(--slate-200); border-radius: 2px; }
+.job-description p  { margin-bottom: 10px; }
+.job-description ul { margin: 0 0 12px 18px; }
+.job-description li { margin-bottom: 4px; }
+.job-description strong { color: var(--slate-800); font-weight: 600; }
+.jd-section-heading {
+  font-size: 13px; font-weight: 700; color: var(--slate-700);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin: 16px 0 6px;
+}
+.jd-section-heading:first-child { margin-top: 0; }
+
+/* ─── ANALYSIS PANEL ─── */
+.panel-col { position: sticky; top: 72px; }
+.analysis-panel {
+  background: var(--white); border: 1px solid var(--slate-200);
+  border-top: 4px solid var(--navy); border-radius: 12px; overflow: hidden;
+}
+.panel-header {
+  padding: 14px 20px 12px;
+  border-bottom: 1px solid var(--slate-100);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.panel-brand {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 11px; font-weight: 700; color: var(--navy);
+  text-transform: uppercase; letter-spacing: 0.8px;
+}
+.panel-badge {
+  width: 20px; height: 20px; background: var(--navy); border-radius: 4px;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 8px; font-weight: 800;
+}
+.panel-role-label {
+  font-size: 12px; color: var(--slate-400); font-weight: 500;
+}
+.panel-body { padding: 20px; }
+
+/* ─── SCORE BLOCK ─── */
+.score-block { text-align: center; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid var(--slate-100); }
+.score-circle {
+  width: 96px; height: 96px; border-radius: 50%;
+  border: 4px solid currentColor;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  margin: 0 auto 12px;
+}
+.score-num  { font-size: 34px; font-weight: 700; line-height: 1; font-family: var(--font-mono); }
+.score-denom { font-size: 13px; opacity: 0.55; font-weight: 500; }
+.score-label { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.score-bar {
+  height: 5px; background: var(--slate-100); border-radius: 3px;
+  max-width: 200px; margin: 10px auto 0; overflow: hidden;
+}
+.score-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s ease; }
+
+.score-green { color: var(--green); }
+.score-amber { color: var(--amber-dark); }
+.score-red   { color: var(--red); }
+
+/* ─── POTENTIAL ─── */
+.potential-line {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--slate-500);
+  background: #f0fdf4; border: 1px solid #bbf7d0;
+  border-radius: 8px; padding: 10px 14px;
+  margin-bottom: 20px;
+}
+.potential-icon { font-size: 15px; flex-shrink: 0; }
+.potential-score { color: var(--green); font-weight: 700; font-family: var(--font-mono); }
+
+/* ─── BULLETS ─── */
+.panel-section { margin-bottom: 20px; }
+.panel-section-title {
+  font-size: 11px; font-weight: 700; color: var(--slate-400);
+  text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 10px;
+}
+.bullet-list { display: flex; flex-direction: column; gap: 7px; }
+.bullet-item {
+  font-size: 13px; color: var(--slate-600); line-height: 1.5;
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.bullet-icon { flex-shrink: 0; margin-top: 1px; }
+
+/* ─── GAPS ─── */
+.gap-list { display: flex; flex-direction: column; gap: 12px; }
+.gap-entry {
+  border: 1px solid var(--slate-200); border-radius: 8px; padding: 12px 14px;
+  background: var(--slate-50);
+}
+.gap-entry-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 8px; }
+.gap-text { font-size: 13px; color: var(--slate-700); line-height: 1.45; flex: 1; }
+.gap-type-badge {
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+  white-space: nowrap; letter-spacing: 0.3px; flex-shrink: 0;
+}
+.badge-exp  { background: var(--red-light);  color: #991b1b; }
+.badge-part { background: #fef3c7; color: #92400e; }
+.gap-keywords { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.gap-keyword {
+  font-size: 11px; padding: 2px 8px; border-radius: 4px;
+  background: var(--slate-100); color: var(--slate-600); font-family: var(--font-mono);
+}
+.gap-bridge {
+  font-size: 12px; color: var(--slate-500); line-height: 1.5;
+  border-top: 1px solid var(--slate-200); padding-top: 8px;
+}
+.gap-bridge-label {
+  font-size: 11px; font-weight: 700; color: var(--amber-dark);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px;
+}
+
+/* ─── SALARY ─── */
+.salary-block {
+  display: flex; align-items: center; justify-content: space-between;
+  background: var(--slate-50); border: 1px solid var(--slate-200);
+  border-radius: 8px; padding: 12px 14px; margin-bottom: 20px;
+}
+.salary-label { font-size: 12px; color: var(--slate-400); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; }
+.salary-range { font-size: 16px; font-weight: 700; color: var(--slate-800); font-family: var(--font-mono); }
+.salary-currency { font-size: 11px; color: var(--slate-400); margin-top: 2px; }
+
+/* ─── LOCKED ─── */
+.locked-section {
+  border: 1.5px dashed var(--slate-200); border-radius: 10px;
+  padding: 20px; text-align: center;
+  background: var(--slate-50);
+}
+.lock-icon { font-size: 22px; margin-bottom: 8px; }
+.locked-title { font-size: 14px; font-weight: 700; color: var(--slate-600); margin-bottom: 4px; }
+.locked-desc  { font-size: 13px; color: var(--slate-400); margin-bottom: 14px; line-height: 1.5; }
+.locked-features {
+  display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; margin-bottom: 16px;
+}
+.locked-feature {
+  font-size: 12px; padding: 4px 12px; border-radius: 999px;
+  background: var(--slate-100); color: var(--slate-500); font-weight: 500;
+}
+.btn-setup {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--navy); color: var(--white);
+  padding: 10px 22px; border-radius: 8px;
+  font-size: 14px; font-weight: 600; text-decoration: none;
+  transition: background 0.2s; font-family: var(--font-body);
+}
+.btn-setup:hover { background: var(--navy-light); }
+
+/* ─── DEMO BANNER ─── */
+.demo-banner {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 90;
+  background: var(--navy-deep);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between; gap: 20px;
+}
+.banner-text { font-size: 14px; color: rgba(255,255,255,0.75); line-height: 1.4; }
+.banner-text strong { color: var(--white); }
+.btn-chrome {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--amber); color: var(--navy-deep);
+  padding: 10px 22px; border-radius: 8px;
+  font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-chrome:hover { background: var(--amber-dark); transform: translateY(-1px); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 800px) {
+  .demo-grid { grid-template-columns: 1fr; }
+  .panel-col { position: static; }
+  .nav-links a:not(.btn-cta) { display: none; }
+  .demo-banner { flex-direction: column; text-align: center; gap: 12px; }
+  .btn-chrome { width: 100%; justify-content: center; }
+}
+@media (max-width: 480px) {
+  .role-picker { gap: 8px; }
+  .role-pill { padding: 8px 14px; font-size: 13px; }
+  .page-header { padding-top: 76px; }
+}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-badge">JF</div>
+      True Job Fit
+    </a>
+    <div class="nav-links">
+      <a href="index.html#features">Features</a>
+      <a href="index.html#how">How it works</a>
+      <a href="index.html#pricing">Pricing</a>
+      <a href="https://chromewebstore.google.com/detail/EXTENSION_ID" class="btn-cta" target="_blank" rel="noopener noreferrer">Add to Chrome — Free</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Page header -->
+<div class="page-header">
+  <div class="page-header-eyebrow">✦ Live Demo</div>
+  <h1>See a real analysis for your field</h1>
+  <p>This is exactly what True Job Fit shows on every LinkedIn job you view — match score, gap coaching, and salary estimate. Pick your role type below.</p>
+</div>
+
+<!-- Role picker -->
+<div class="role-picker-wrap">
+  <div class="role-picker" id="role-picker">
+    <button class="role-pill" data-role="engineering" onclick="selectRole('engineering')">
+      <span class="role-pill-emoji">💻</span> Engineering
+    </button>
+    <button class="role-pill active" data-role="product" onclick="selectRole('product')">
+      <span class="role-pill-emoji">📊</span> Product Management
+    </button>
+    <button class="role-pill" data-role="sales" onclick="selectRole('sales')">
+      <span class="role-pill-emoji">💼</span> Sales / Biz Dev
+    </button>
+    <button class="role-pill" data-role="hr" onclick="selectRole('hr')">
+      <span class="role-pill-emoji">👥</span> HR / People Ops
+    </button>
+    <button class="role-pill" data-role="marketing" onclick="selectRole('marketing')">
+      <span class="role-pill-emoji">📈</span> Marketing / Growth
+    </button>
+  </div>
+</div>
+
+<!-- Two-column demo layout -->
+<div class="demo-grid">
+  <!-- Job listing -->
+  <div class="job-card" id="job-card">
+    <div class="job-card-header" id="job-header"></div>
+    <div class="job-description" id="job-description"></div>
+  </div>
+
+  <!-- Analysis panel -->
+  <div class="panel-col">
+    <div class="analysis-panel">
+      <div class="panel-header">
+        <div class="panel-brand">
+          <div class="panel-badge">JF</div>
+          True Job Fit
+        </div>
+        <div class="panel-role-label" id="panel-role-label"></div>
+      </div>
+      <div class="panel-body" id="panel-body"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Sticky demo banner -->
+<div class="demo-banner">
+  <div class="banner-text">
+    <strong>This is a demo analysis.</strong> True Job Fit runs this automatically on every LinkedIn job you browse — using your own CV and API key.
+  </div>
+  <a href="https://chromewebstore.google.com/detail/EXTENSION_ID" class="btn-chrome" target="_blank" rel="noopener noreferrer">
+    Add to Chrome — Free
+  </a>
+</div>
+
+<script>
+// ─── DEMO DATA (inlined from demo/demo-data.js) ───────────────────────────
+const DEMO_DATA = {
+  engineering: {
+    roleLabel: "Engineering / Technical",
+    roleEmoji: "💻",
+    jobTitle: "Software Engineer (Leadership) - Product",
+    company: "Meta",
+    location: "United Kingdom (Remote)",
+    jobDescription: `Meta is seeking talented principal engineers to join our teams in building cutting-edge products that connect billions of people around the world. As a member of our team, you will manage complex technical problems, build new features, and improve existing products across various platforms, including mobile devices and web applications.
+
+Software Engineer (Leadership) - Product Responsibilities:
+- Drive the team's goals and technical direction to pursue opportunities that make your larger organization more efficient
+- Effectively communicate complex features and systems in detail
+- Understand industry & company-wide trends to help assess & develop new technologies
+- Partner & collaborate with organization leaders to help improve the level of performance of the team & organization
+- Identify new opportunities for the larger organization & influence the appropriate people for staffing/prioritizing these new ideas
+- Lead long term technical strategy and roadmap for large cross-company efforts
+- Suggest, collect and synthesize requirements and create an effective feature roadmap
+- Identify and resolve performance and scalability issues, and drive large efforts to reduce technical debt
+
+Minimum Qualifications:
+- Programming experience in a relevant language
+- Bachelor's degree in Computer Science, Computer Engineering, relevant technical field, or equivalent practical experience
+- Proven track record of planning multi-year roadmap in which short-term projects ladder to the long-term mission
+- Experience driving large cross-functional/industry-wide engineering efforts
+- Experience utilizing data and analysis to explain technical problems and provide detailed feedback and solutions
+- Experience mentoring/influencing experienced engineers across organizations
+
+Preferred Qualifications:
+- Experience in programming languages such as C, C++, Java, Swift, or Kotlin, and scripting languages such as Python, Javascript, or Hack
+- Experience building large-scale applications
+- Experience improving quality through thoughtful code reviews, appropriate testing, proper rollout, monitoring, and proactive changes`,
+    analysisResult: {
+      score: 71,
+      potential_score: 78,
+      summary_bullets: [
+        "✅ Direct experience building and scaling large-scale applications (millions of users/events) aligns with Meta's technical scope.",
+        "✅ Direct experience improving quality through code reviews, testing, monitoring, and deployment processes.",
+        "✅ Strong adjacent experience mentoring engineers and leading technical delivery at the team/feature level.",
+        "⚠️ No direct experience leading org-wide technical strategy or multi-year cross-company roadmaps as required for a principal/leadership role.",
+        "⚠️ Lacks formal people leadership and cross-functional influence at the scale described in the JD."
+      ],
+      gap_analysis: [
+        {
+          gap_text: "No direct experience leading org-wide technical strategy or multi-year cross-company roadmaps as required for a principal/leadership role.",
+          gap_type: "experience_gap",
+          jd_keywords: ["lead long term technical strategy", "multi-year roadmap", "large cross-company efforts"],
+          cv_near_matches: []
+        },
+        {
+          gap_text: "Lacks formal people leadership and cross-functional influence at the scale described in the JD.",
+          gap_type: "partial_gap",
+          jd_keywords: ["drive the team's goals", "collaborate with organization leaders", "mentor/influence experienced engineers"],
+          cv_near_matches: [
+            { cv_text: "Mentored 4 junior/mid engineers via pairing and weekly code reviews; created a 'service readiness checklist' adopted by two squads", relevance: "Shows mentoring and some cross-team influence, but not at the formal people leader or org-wide scale." }
+          ]
+        }
+      ],
+      estimated_salary: { currency: "GBP", min: 110000, median: 130000, max: 150000, period: "YEAR" }
+    }
+  },
+
+  product: {
+    roleLabel: "Product Management",
+    roleEmoji: "📊",
+    jobTitle: "Senior Product Manager - Sports (Strategy)",
+    company: "Easygo",
+    location: "Melbourne, Victoria, Australia (On-site)",
+    jobDescription: `At Easygo, product is at the heart of everything we build. We're scaling a world-class sportsbook used by millions of sports fans globally and 2026 is a pivotal year with the World Cup and major growth ahead.
+
+We're looking for a Senior Product Manager to lead a critical Sportsbook squad in Melbourne, focused on driving growth through game-changing customer experiences. You'll combine bold, high-impact initiatives with rapid iteration and quick wins to continuously improve the end-to-end sportsbook experience.
+
+What you'll do:
+- Own the product strategy, roadmap, and delivery for a key Sportsbook squad
+- Drive sportsbook growth through standout customer experiences and innovation
+- Balance bold, high-impact initiatives with fast, incremental improvements
+- Translate company and squad goals into clear, measurable growth outcomes
+- Partner closely with Design and Engineering to ship high-quality features at pace
+- Use data, insights, and customer feedback to continuously optimise performance
+- Track market trends and competitor moves to identify opportunities to differentiate
+
+What we're looking for:
+- 5+ years' experience as a Product Manager delivering digital products at scale
+- Strong sports and sportsbook domain knowledge (highly desirable)
+- Proven ability to drive growth through customer-focused product improvements
+- Technically confident working with engineers on complex systems and trade-offs
+- Comfortable operating in fast-paced, high-growth environments with ambiguity
+
+Why Easygo:
+- Product-led culture with real ownership and impact
+- Global reach with millions of passionate users
+- Lucrative annual bonuses
+- Learning and Development Platform with 9,000+ courses
+- Fun office environment with F1 simulators and gaming consoles
+- In-house barista and daily breakfast`,
+    analysisResult: {
+      score: 78,
+      potential_score: 84,
+      summary_bullets: [
+        "✅ 8 years of IC product management with direct experience owning strategy, roadmap, and delivery for SaaS products",
+        "✅ Demonstrated ability to drive measurable growth through customer-focused product improvements (adjacent to sportsbook growth)",
+        "✅ Direct experience partnering with engineering and design to ship features rapidly and iteratively",
+        "⚠️ No direct sports or sportsbook domain experience — all domain knowledge is adjacent from B2B SaaS",
+        "⚠️ Market trend and competitor analysis experience is adjacent, not specific to the sports betting industry"
+      ],
+      gap_analysis: [
+        {
+          gap_text: "No direct sports or sportsbook domain experience — all domain knowledge is adjacent from B2B SaaS",
+          gap_type: "experience_gap",
+          jd_keywords: ["sportsbook", "sports domain knowledge", "sports betting"],
+          cv_near_matches: []
+        },
+        {
+          gap_text: "Market trend and competitor analysis experience is adjacent, not specific to the sports betting industry",
+          gap_type: "partial_gap",
+          jd_keywords: ["Track market trends", "competitor moves", "sportsbook industry"],
+          cv_near_matches: [
+            { cv_text: "Conducted competitor teardowns and win/loss reviews to sharpen positioning; produced battlecards and launch notes, but did not run formal market research programs.", relevance: "Shows experience with competitor analysis and market positioning, though not in the sports betting context." }
+          ]
+        }
+      ],
+      estimated_salary: { currency: "AUD", min: 150000, median: 165000, max: 180000, period: "YEAR" }
+    }
+  },
+
+  sales: {
+    roleLabel: "Sales / Business Development",
+    roleEmoji: "💼",
+    jobTitle: "Strategic Enterprise Account Executive, Financial Services",
+    company: "Databricks",
+    location: "New York, NY (On-site)",
+    jobDescription: `As a Strategic Enterprise Account Executive at Databricks, you are a strategic sales professional experienced in selling into Financial Services accounts. You know how to sell innovation and change through customer vision expansion and can guide deals forward to compress decision cycles.
+
+The Impact You Will Have:
+- Meet with CIOs, IT executives, LOB executives, Program Managers, and other important partners
+- Close both new accounts and existing accounts
+- Identify and close quick, small wins while managing longer, complex sales cycles
+- Exceed activity, pipeline, and revenue targets
+- Track all customer details including use case, purchase time frames, next steps, and forecasting in Salesforce
+- Use a solution-based approach to selling and creating value for customers
+- Promote Databricks' enterprise cloud data platform powered by Apache Spark™
+- Ensure 100% satisfaction among all customers
+- Build a plan for success internally at Databricks and externally with your accounts
+
+What We Look For:
+- Field sales experience within big data, Cloud, or SaaS sales
+- Prior customer relationships with CIOs, program managers, and essential decision makers
+- 7+ years experience exceeding sales quotas
+- Expertise with financial services institutions preferable
+- Success closing new accounts while working existing accounts
+- Understanding of Spark and big data preferable
+- Bachelor's Degree
+
+Compensation: $272,000—$374,000 USD (base + commission)`,
+    analysisResult: {
+      score: 76,
+      potential_score: 84,
+      summary_bullets: [
+        "✅ 8 years of quota-carrying SaaS sales experience with consistent overachievement is a strong direct match for seniority and sales execution requirements.",
+        "✅ Direct experience closing both new business and expanding existing accounts, managing both long and short sales cycles.",
+        "✅ Demonstrated Salesforce pipeline discipline and forecasting aligns directly with role expectations.",
+        "⚠️ No direct experience selling into financial services or engaging CIO/IT executive stakeholders—experience is adjacent, not direct.",
+        "⚠️ No experience with cloud data platforms or Spark; SaaS sales background is adjacent but not directly in the required technology domain."
+      ],
+      gap_analysis: [
+        {
+          gap_text: "No direct experience selling into financial services or engaging CIO/IT executive stakeholders—experience is adjacent, not direct.",
+          gap_type: "partial_gap",
+          jd_keywords: ["Financial Services accounts", "relationships with CIOs, IT executives, and decision makers"],
+          cv_near_matches: [
+            { cv_text: "Senior Account Executive with 8 years selling B2B SaaS into SMB and mid-market accounts across operations and customer support tools.", relevance: "Shows experience selling into business and operations leaders, but not specifically financial services or CIO/IT executives." }
+          ]
+        },
+        {
+          gap_text: "No experience with cloud data platforms or Spark; SaaS sales background is adjacent but not directly in the required technology domain.",
+          gap_type: "experience_gap",
+          jd_keywords: ["cloud data platform", "Apache Spark", "Databricks"],
+          cv_near_matches: []
+        }
+      ],
+      estimated_salary: { currency: "USD", min: 272000, median: 323000, max: 374000, period: "YEAR" }
+    }
+  },
+
+  hr: {
+    roleLabel: "HR / People Operations",
+    roleEmoji: "👥",
+    jobTitle: "Head of Talent",
+    company: "Tandem Partners (client: major Australian retailer)",
+    location: "Melbourne, Victoria, Australia (Hybrid)",
+    jobDescription: `Tandem Partners is proud to be partnering with a highly recognisable Australian organisation undergoing a significant multi-year transformation to appoint an exceptional Head of Talent. This is a rare opportunity to step into an enterprise-wide role, shaping how talent is attracted, engaged and experienced across a complex, customer-centric, multi-brand business.
+
+The opportunity:
+Reporting into the GM Talent, Capability and Organisational Effectiveness, and joining a newly refreshed and highly regarded People team, the Head of Talent will lead the end-to-end talent acquisition function, overseeing a team across high-volume retail recruitment and corporate hiring, while also impacting broader Talent Management across the organisation.
+
+What You'll Be Accountable For:
+- Leading and evolving the end-to-end talent acquisition function across a large, multi-brand environment
+- Redesigning recruitment processes to support scale, efficiency and quality by championing intelligent use of technology
+- Partnering with senior leaders to anticipate and deliver workforce needs aligned to strategic priorities
+- Owning Employer Brand and Diversity, as well as key involvement in the talent management process
+- Building a high-performance team culture underpinned by continuous improvement
+- Playing a critical role in the integration of multiple ATS platforms into a cohesive, future-ready recruitment tech stack
+- Direct involvement in critical and senior-level recruitment and appointments
+
+About you:
+- Deep experience leading Talent Acquisition functions at scale
+- A balance of high volume and corporate recruitment expertise
+- Strong people leadership capability, including coaching
+- Experience navigating large scale change, integration or transformation
+- Confidence engaging with senior stakeholders without ego
+- Retail or customer-centric experience is valued
+
+Remuneration: Attractive executive package including base salary plus short-term incentive opportunity.`,
+    analysisResult: {
+      score: 65,
+      potential_score: 75,
+      summary_bullets: [
+        "✅ Direct experience redesigning recruitment processes and leveraging HR technology aligns with process improvement requirements.",
+        "✅ Strong adjacent experience partnering with senior leaders and managing high-volume hiring in tech environments.",
+        "⚠️ No direct people leadership or formal team management experience; role requires leading a TA team.",
+        "⚠️ Lacks experience with ATS integration and multi-brand, enterprise-scale TA function ownership.",
+        "⚠️ Employer brand and diversity strategy experience is adjacent, not direct—candidate has supported but not owned these areas."
+      ],
+      gap_analysis: [
+        {
+          gap_text: "No direct people leadership or formal team management experience; role requires leading a TA team.",
+          gap_type: "experience_gap",
+          jd_keywords: ["lead the end-to-end talent acquisition function", "people leadership capability", "building a high-performance team"],
+          cv_near_matches: [
+            { cv_text: "Partnered with 6 functional leaders across product and customer teams (~180 employees), supporting performance cycles, manager coaching, and employee relations", relevance: "Shows senior stakeholder partnership and coaching but not formal people management or team leadership." }
+          ]
+        },
+        {
+          gap_text: "Lacks experience with ATS integration and multi-brand, enterprise-scale TA function ownership.",
+          gap_type: "experience_gap",
+          jd_keywords: ["integration of multiple ATS platforms", "multi-brand environment", "enterprise-wide role"],
+          cv_near_matches: []
+        },
+        {
+          gap_text: "Employer brand and diversity strategy experience is adjacent, not direct—candidate has supported but not owned these areas.",
+          gap_type: "partial_gap",
+          jd_keywords: ["own Employer Brand and Diversity", "talent management process"],
+          cv_near_matches: [
+            { cv_text: "Assisted with recruitment campaigns and employer branding basics for clients, focusing on execution rather than strategic brand ownership.", relevance: "Shows involvement in employer branding but not ownership of strategy or diversity initiatives." }
+          ]
+        }
+      ],
+      estimated_salary: { currency: "AUD", min: 180000, median: 210000, max: 240000, period: "YEAR" }
+    }
+  },
+
+  marketing: {
+    roleLabel: "Marketing / Growth",
+    roleEmoji: "📈",
+    jobTitle: "Senior Marketing Manager, EMEA",
+    company: "Outreach",
+    location: "London, England, United Kingdom (Hybrid)",
+    jobDescription: `Outreach is seeking an experienced Marketing Manager to lead the execution of regional marketing programs that accelerate pipeline growth, strengthen customer relationships, and drive brand engagement across EMEA.
+
+Key Responsibilities:
+
+Strategy & Planning:
+- Develop and own the regional field marketing strategy across EMEA, aligned with business goals, ICPs, and vertical priorities
+- Partner with regional sales and GTM leaders to align on target accounts, pipeline goals, and regional priorities
+- Build integrated regional marketing plans that combine events, digital programs, account-based campaigns, and partner activations
+
+Program Development & Execution:
+- Plan and deliver high-impact regional programs such as executive dinners, roadshows, workshops, and third-party event participation
+- Collaborate with events and creative teams to develop localized content, messaging, and experiences
+- Drive account-based and vertical-specific activations designed to deepen relationships with customers and prospects
+- Manage program logistics, budgets, timelines, and stakeholder communication
+
+Cross-Functional Collaboration:
+- Work with Event Operations and Marketing Operations to ensure accurate campaign setup, lead capture, and reporting in Salesforce and Marketo
+- Collaborate with Product Marketing to ensure regional messaging reflects product priorities
+
+Measurement & Optimization:
+- Define success metrics for each program, including sourced and influenced pipeline, conversion rates, and engagement
+- Present regular reporting and strategic insights to leadership and stakeholders
+
+Who You Are:
+- 7-10 years of experience in B2B field marketing, regional marketing, ABM, or integrated campaigns in SaaS or high-growth technology
+- Strong understanding of B2B and enterprise sales cycles
+- Data-driven mindset with fluency in Salesforce, Marketo, and event tools such as Splash, Bizzabo, or Cvent
+- Comfortable working across time zones with occasional travel (up to 30%)
+
+Benefits: 25 days holiday, pension, private medical, dental, life insurance, equity program.`,
+    analysisResult: {
+      score: 74,
+      potential_score: 80,
+      summary_bullets: [
+        "✅ Direct experience managing multi-channel digital campaigns, budgets, and program logistics aligns with core execution requirements.",
+        "✅ Strong track record of defining and reporting on campaign metrics, pipeline impact, and conversion rates.",
+        "✅ 8 years in B2B SaaS marketing with measurable growth outcomes provides a solid adjacent foundation for regional field marketing.",
+        "⚠️ No direct experience planning or executing in-person regional events (e.g., executive dinners, roadshows) or using enterprise event tools like Splash/Bizzabo.",
+        "⚠️ Field marketing and ABM/vertical activation experience is adjacent, not direct—candidate has supported but not owned these functions at EMEA scale."
+      ],
+      gap_analysis: [
+        {
+          gap_text: "No direct experience planning or executing in-person regional events (e.g., executive dinners, roadshows) or using enterprise event tools like Splash/Bizzabo.",
+          gap_type: "experience_gap",
+          jd_keywords: ["executive dinners", "roadshows", "Splash", "Bizzabo", "Cvent"],
+          cv_near_matches: []
+        },
+        {
+          gap_text: "Field marketing and ABM/vertical activation experience is adjacent, not direct—candidate has supported but not owned these functions at EMEA scale.",
+          gap_type: "partial_gap",
+          jd_keywords: ["field marketing", "account-based campaigns", "vertical-specific activations"],
+          cv_near_matches: [
+            { cv_text: "Supported product launch initiatives by contributing messaging and channel plans; collaborated with product marketing but did not own PMM responsibilities end-to-end.", relevance: "Shows collaboration on go-to-market and targeted campaigns, but not ownership of field marketing or ABM." }
+          ]
+        }
+      ],
+      estimated_salary: { currency: "GBP", min: 65000, median: 75000, max: 85000, period: "YEAR" }
+    }
+  }
+};
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+}
+
+function scoreColor(s) {
+  return s >= 75 ? 'score-green' : s >= 60 ? 'score-amber' : 'score-red';
+}
+
+function scoreHex(s) {
+  return s >= 75 ? '#16a34a' : s >= 60 ? '#d97706' : '#dc2626';
+}
+
+function scoreLabel(s) {
+  if (s >= 85) return 'Strong Match';
+  if (s >= 75) return 'Good Match';
+  if (s >= 60) return 'Moderate Match';
+  return 'Weak Match';
+}
+
+function gapTypeBadge(type) {
+  if (type === 'experience_gap') return { cls: 'badge-exp', label: 'Experience Gap' };
+  if (type === 'partial_gap')    return { cls: 'badge-part', label: 'Partial Gap' };
+  return { cls: 'badge-part', label: type.replace(/_/g, ' ') };
+}
+
+function workBadge(location) {
+  const low = location.toLowerCase();
+  if (low.includes('remote'))  return { cls: 'badge-remote', label: 'Remote' };
+  if (low.includes('hybrid'))  return { cls: 'badge-hybrid', label: 'Hybrid' };
+  if (low.includes('on-site')) return { cls: 'badge-onsite', label: 'On-site' };
+  return null;
+}
+
+function cleanLocation(location) {
+  return location.replace(/\s*\((Remote|Hybrid|On-site)\)/i, '').trim();
+}
+
+function formatSalary(sal) {
+  if (!sal || !sal.min) return null;
+  const symbol = sal.currency === 'GBP' ? '£' : sal.currency === 'AUD' ? 'A$' : '$';
+  const fmt = n => symbol + (n >= 1000 ? (n / 1000).toFixed(0) + 'K' : n);
+  return fmt(sal.min) + ' – ' + fmt(sal.max);
+}
+
+function renderJD(text) {
+  const blocks = text.split(/\n\n+/);
+  return blocks.map(block => {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return '';
+
+    // Section heading (no dash, ends no punctuation, short)
+    if (lines.length === 1 && !lines[0].startsWith('-') && lines[0].length < 60) {
+      return '<div class="jd-section-heading">' + escHtml(lines[0]) + '</div>';
+    }
+
+    // Bullet list
+    if (lines.every(l => l.startsWith('-'))) {
+      return '<ul>' + lines.map(l => '<li>' + escHtml(l.slice(1).trim()) + '</li>').join('') + '</ul>';
+    }
+
+    // Mixed or paragraph
+    let html = '';
+    let inList = false;
+    for (const line of lines) {
+      if (line.startsWith('-')) {
+        if (!inList) { html += '<ul>'; inList = true; }
+        html += '<li>' + escHtml(line.slice(1).trim()) + '</li>';
+      } else {
+        if (inList) { html += '</ul>'; inList = false; }
+        html += '<p>' + escHtml(line) + '</p>';
+      }
+    }
+    if (inList) html += '</ul>';
+    return html;
+  }).join('');
+}
+
+// ─── RENDER ────────────────────────────────────────────────────────────────
+function renderJobHeader(pack) {
+  const wb = workBadge(pack.location);
+  const locClean = cleanLocation(pack.location);
+  return `
+    <div class="job-title">${escHtml(pack.jobTitle)}</div>
+    <div class="job-meta">
+      <span class="job-company">${escHtml(pack.company)}</span>
+      <span class="job-sep">·</span>
+      <span class="job-location">${escHtml(locClean)}</span>
+    </div>
+    <div class="job-badges">
+      ${wb ? `<span class="job-badge ${wb.cls}">${wb.label}</span>` : ''}
+    </div>
+  `;
+}
+
+function renderPanel(pack) {
+  const r = pack.analysisResult;
+  const colorClass = scoreColor(r.score);
+  const colorHex   = scoreHex(r.score);
+  const label      = scoreLabel(r.score);
+  const salary     = formatSalary(r.estimated_salary);
+
+  // Bullets split
+  const strengths = r.summary_bullets.filter(b => b.startsWith('✅'));
+  const gaps      = r.summary_bullets.filter(b => b.startsWith('⚠️'));
+
+  // Gap entries
+  const gapHtml = r.gap_analysis.map(g => {
+    const badge = gapTypeBadge(g.gap_type);
+    const kwHtml = g.jd_keywords.slice(0, 4).map(kw =>
+      `<span class="gap-keyword">${escHtml(kw)}</span>`
+    ).join('');
+    const bridge = g.cv_near_matches && g.cv_near_matches[0];
+    const bridgeHtml = bridge ? `
+      <div class="gap-bridge">
+        <div class="gap-bridge-label">Bridge available</div>
+        ${escHtml(bridge.relevance)}
+      </div>` : '';
+    return `
+      <div class="gap-entry">
+        <div class="gap-entry-top">
+          <div class="gap-text">${escHtml(g.gap_text)}</div>
+          <span class="gap-type-badge ${badge.cls}">${badge.label}</span>
+        </div>
+        ${kwHtml ? `<div class="gap-keywords">${kwHtml}</div>` : ''}
+        ${bridgeHtml}
+      </div>`;
+  }).join('');
+
+  return `
+    <!-- Score -->
+    <div class="score-block">
+      <div class="score-circle ${colorClass}">
+        <span class="score-num">${r.score}</span>
+        <span class="score-denom">/100</span>
+      </div>
+      <div class="score-label ${colorClass}">${label}</div>
+      <div class="score-bar">
+        <div class="score-bar-fill" style="width:${r.score}%; background:${colorHex}"></div>
+      </div>
+    </div>
+
+    <!-- Potential score -->
+    <div class="potential-line">
+      <span class="potential-icon">⚡</span>
+      <span>Could reach <span class="potential-score">~${r.potential_score}</span> with gap reframes</span>
+    </div>
+
+    <!-- Strengths -->
+    <div class="panel-section">
+      <div class="panel-section-title">Strengths</div>
+      <div class="bullet-list">
+        ${strengths.map(b => `
+          <div class="bullet-item">
+            <span class="bullet-icon">✅</span>
+            <span>${escHtml(b.replace(/^✅\s*/, ''))}</span>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <!-- Gaps -->
+    <div class="panel-section">
+      <div class="panel-section-title">Gaps</div>
+      <div class="bullet-list" style="margin-bottom:12px">
+        ${gaps.map(b => `
+          <div class="bullet-item">
+            <span class="bullet-icon">⚠️</span>
+            <span>${escHtml(b.replace(/^⚠️\s*/, ''))}</span>
+          </div>`).join('')}
+      </div>
+      <div class="gap-list">${gapHtml}</div>
+    </div>
+
+    <!-- Salary -->
+    ${salary ? `
+    <div class="salary-block">
+      <div>
+        <div class="salary-label">Estimated Salary</div>
+        <div class="salary-currency">${r.estimated_salary.currency} · per year</div>
+      </div>
+      <div class="salary-range">${salary}</div>
+    </div>` : ''}
+
+    <!-- Locked section -->
+    <div class="locked-section">
+      <div class="lock-icon">🔒</div>
+      <div class="locked-title">More tools unlock after setup</div>
+      <div class="locked-desc">These features are available on every LinkedIn job once you connect your CV and API key.</div>
+      <div class="locked-features">
+        <span class="locked-feature">✉️ Cover Letter</span>
+        <span class="locked-feature">🎤 Interview Prep</span>
+        <span class="locked-feature">📊 Save to Dashboard</span>
+        <span class="locked-feature">🔑 Gap Coach</span>
+      </div>
+      <a href="https://chromewebstore.google.com/detail/EXTENSION_ID" class="btn-setup" target="_blank" rel="noopener noreferrer">
+        Set Up True Job Fit →
+      </a>
+    </div>
+  `;
+}
+
+// ─── SELECT ROLE ───────────────────────────────────────────────────────────
+function selectRole(role) {
+  const pack = DEMO_DATA[role];
+  if (!pack) return;
+
+  // Update pills
+  document.querySelectorAll('.role-pill').forEach(p => {
+    p.classList.toggle('active', p.dataset.role === role);
+  });
+
+  // Update job card
+  document.getElementById('job-header').innerHTML      = renderJobHeader(pack);
+  document.getElementById('job-description').innerHTML = renderJD(pack.jobDescription);
+
+  // Update analysis panel
+  document.getElementById('panel-role-label').textContent = pack.roleLabel;
+  document.getElementById('panel-body').innerHTML          = renderPanel(pack);
+}
+
+// ─── BOOT ──────────────────────────────────────────────────────────────────
+selectRole('product');
+
+// Nav scroll shadow
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+}, { passive: true });
+</script>
+</body>
+</html>

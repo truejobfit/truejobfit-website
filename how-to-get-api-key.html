@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How to Get an OpenAI API Key — True Job Fit</title>
+<meta name="description" content="Step-by-step guide to getting an OpenAI API key for True Job Fit. Takes about 5 minutes. Typical cost: $3–5/month for active job searching.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1e3a5f;
+  --navy-deep: #0f2440;
+  --navy-light: #2a4f7a;
+  --amber: #f59e0b;
+  --green: #16a34a;
+  --green-light: #dcfce7;
+  --slate-50: #f8fafc;
+  --slate-100: #f1f5f9;
+  --slate-200: #e2e8f0;
+  --slate-400: #94a3b8;
+  --slate-500: #64748b;
+  --slate-600: #475569;
+  --slate-700: #334155;
+  --slate-800: #1e293b;
+  --white: #ffffff;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  color: var(--slate-800);
+  background: var(--white);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ─── NAV ─── */
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--slate-200);
+}
+.nav.scrolled { box-shadow: 0 1px 8px rgba(0,0,0,0.06); }
+.nav-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--navy);
+  text-decoration: none;
+}
+.nav-badge {
+  width: 28px;
+  height: 28px;
+  background: var(--navy);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a {
+  font-size: 14px;
+  color: var(--slate-600);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--navy); }
+.btn-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: var(--white);
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-cta:hover { background: var(--navy-light); transform: translateY(-1px); color: var(--white); }
+
+/* ─── PAGE ─── */
+.page {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 96px 24px 80px;
+}
+
+.page-eyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--slate-500);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+.page-title {
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--navy-deep);
+  line-height: 1.2;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 600px) {
+  .page-title { font-size: 28px; }
+}
+
+.page-intro {
+  font-size: 17px;
+  color: var(--slate-600);
+  margin-bottom: 40px;
+  max-width: 600px;
+}
+
+/* ─── COST CALLOUT ─── */
+.cost-callout {
+  background: var(--green-light);
+  border: 1px solid #bbf7d0;
+  border-radius: 10px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.cost-callout-icon {
+  font-size: 20px;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.cost-callout-text {
+  font-size: 15px;
+  color: #166534;
+}
+.cost-callout-text strong { font-weight: 600; }
+
+/* ─── STEPS ─── */
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.step {
+  display: flex;
+  gap: 20px;
+  position: relative;
+}
+
+.step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 19px;
+  top: 44px;
+  bottom: 0;
+  width: 2px;
+  background: var(--slate-200);
+}
+
+.step-left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.step-num {
+  width: 40px;
+  height: 40px;
+  background: var(--navy);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.step-body {
+  padding-bottom: 36px;
+  flex: 1;
+  min-width: 0;
+}
+
+.step-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--navy-deep);
+  margin-bottom: 8px;
+  margin-top: 8px;
+}
+
+.step-desc {
+  font-size: 15px;
+  color: var(--slate-600);
+  line-height: 1.6;
+}
+
+.step-desc p { margin-bottom: 8px; }
+.step-desc p:last-child { margin-bottom: 0; }
+
+.step-desc a {
+  color: var(--navy);
+  font-weight: 500;
+}
+.step-desc a:hover { color: var(--navy-light); }
+
+/* ─── URL CHIP ─── */
+.url-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--slate-100);
+  border: 1px solid var(--slate-200);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-family: 'Courier New', monospace;
+  color: var(--slate-700);
+  margin-top: 8px;
+  text-decoration: none;
+  transition: background 0.15s;
+  word-break: break-all;
+}
+.url-chip:hover { background: var(--slate-200); color: var(--slate-700); }
+
+/* ─── TIP BOX ─── */
+.tip-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #92400e;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+.tip-box strong { font-weight: 600; }
+
+/* ─── BILLING NOTE ─── */
+.billing-note {
+  background: var(--slate-50);
+  border: 1px solid var(--slate-200);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: var(--slate-600);
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* ─── DONE STATE ─── */
+.done-block {
+  border-top: 1px solid var(--slate-200);
+  padding-top: 36px;
+  margin-top: 4px;
+}
+.done-block h2 {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--navy-deep);
+  margin-bottom: 12px;
+}
+.done-block p {
+  font-size: 15px;
+  color: var(--slate-600);
+  margin-bottom: 20px;
+}
+.done-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.btn-done-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--navy);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.15s;
+}
+.btn-done-primary:hover { background: var(--navy-light); transform: translateY(-1px); color: white; }
+
+/* ─── FOOTER ─── */
+.footer {
+  text-align: center;
+  padding: 24px;
+  font-size: 13px;
+  color: var(--slate-500);
+  border-top: 1px solid var(--slate-200);
+}
+.footer a { color: var(--slate-500); text-decoration: none; }
+.footer a:hover { color: var(--navy); }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="https://truejob.fit" class="nav-brand">
+      <div class="nav-badge">JF</div>
+      True Job Fit
+    </a>
+    <div class="nav-links">
+      <a href="https://truejob.fit">Home</a>
+      <a href="https://truejob.fit/demo.html">See Demo</a>
+      <a href="https://chromewebstore.google.com/detail/EXTENSION_ID" class="btn-cta" target="_blank">Add to Chrome</a>
+    </div>
+  </div>
+</nav>
+
+<main class="page">
+
+  <p class="page-eyebrow">Setup Guide</p>
+  <h1 class="page-title">How to get an OpenAI API key</h1>
+  <p class="page-intro">True Job Fit uses OpenAI to analyse job matches. You'll need your own API key — it only takes about 5 minutes to set up.</p>
+
+  <div class="cost-callout">
+    <span class="cost-callout-icon">💚</span>
+    <div class="cost-callout-text">
+      <strong>Typical cost: $3–5/month</strong> for active job searching (about 2.5 cents per job scan). The extension itself is free — you pay OpenAI directly for the AI processing.
+    </div>
+  </div>
+
+  <div class="steps">
+
+    <!-- Step 1 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">1</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">Create an OpenAI account</div>
+        <div class="step-desc">
+          <p>Go to <a href="https://platform.openai.com/signup" target="_blank" rel="noopener noreferrer">platform.openai.com</a> and sign up with your email. If you already have a ChatGPT account, you can sign in with the same email.</p>
+          <a class="url-chip" href="https://platform.openai.com/signup" target="_blank" rel="noopener noreferrer">platform.openai.com/signup →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">2</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">Add billing (pay as you go)</div>
+        <div class="step-desc">
+          <p>OpenAI requires a credit card before you can use the API. Go to <strong>Settings → Billing</strong> and add a payment method.</p>
+          <a class="url-chip" href="https://platform.openai.com/settings/organization/billing/overview" target="_blank" rel="noopener noreferrer">platform.openai.com → Settings → Billing</a>
+          <div class="billing-note">
+            We recommend adding $5–10 as a one-time top-up to start. You can set a usage limit in the same Billing section so you're never surprised by charges.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">3</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">Create a new API key</div>
+        <div class="step-desc">
+          <p>Go to <strong>API Keys</strong> in the left sidebar and click <strong>+ Create new secret key</strong>. Give it any name (e.g. "True Job Fit").</p>
+          <a class="url-chip" href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer">platform.openai.com/api-keys →</a>
+          <div class="tip-box">
+            <strong>Important:</strong> Copy the key as soon as it's shown — OpenAI only displays it once. It starts with <code>sk-</code>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">4</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">Paste your key into True Job Fit</div>
+        <div class="step-desc">
+          <p>Click the True Job Fit icon in your Chrome toolbar to open the popup. Paste your API key (starting with <code>sk-</code>) into the API key field and click <strong>Save</strong>.</p>
+          <p>Your key is stored locally in your browser using Chrome's secure storage — it never leaves your device except when making API calls directly to OpenAI.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="step">
+      <div class="step-left">
+        <div class="step-num">5</div>
+      </div>
+      <div class="step-body">
+        <div class="step-title">Upload your CV and start matching</div>
+        <div class="step-desc">
+          <p>Upload your CV (PDF or DOCX) in the popup or onboarding page. Then browse to any LinkedIn job listing — True Job Fit will automatically show your match score.</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /steps -->
+
+  <div class="done-block">
+    <h2>All set — start browsing jobs</h2>
+    <p>Once your API key and CV are saved, open any LinkedIn job listing and True Job Fit will show your match score, gap coaching, and cover letter options automatically.</p>
+    <div class="done-actions">
+      <a href="https://www.linkedin.com/jobs/collections/recommended/" class="btn-done-primary" target="_blank" rel="noopener noreferrer">Browse LinkedIn Jobs →</a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p>True Job Fit · <a href="https://truejob.fit/privacy-policy.html">Privacy Policy</a></p>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 10);
+});
+</script>
+</body>
+</html>
