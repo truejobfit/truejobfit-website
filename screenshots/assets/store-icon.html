@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>True Job Fit — Store Icon 128×128</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #f0f0f0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    gap: 32px;
+  }
+
+  h2 {
+    font-size: 14px;
+    color: #666;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .icon-row {
+    display: flex;
+    align-items: end;
+    gap: 40px;
+  }
+
+  .icon-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .icon-container span {
+    font-size: 11px;
+    color: #999;
+  }
+
+  /* The actual 128×128 icon */
+  .icon-128 {
+    width: 128px;
+    height: 128px;
+    position: relative;
+  }
+
+  /* Preview sizes */
+  .icon-preview {
+    image-rendering: auto;
+    border-radius: 4px;
+  }
+
+  canvas {
+    display: block;
+  }
+
+  .export-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  button {
+    padding: 10px 24px;
+    background: #1e3a5f;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button:hover { background: #2a5080; }
+
+  .checkerboard {
+    background-image:
+      linear-gradient(45deg, #ccc 25%, transparent 25%),
+      linear-gradient(-45deg, #ccc 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #ccc 75%),
+      linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0;
+    padding: 8px;
+    border-radius: 8px;
+  }
+
+  .on-white { background: #fff; padding: 8px; border-radius: 8px; }
+  .on-dark  { background: #1e3a5f; padding: 8px; border-radius: 8px; }
+</style>
+</head>
+<body>
+
+<h2>True Job Fit — Chrome Web Store Icon</h2>
+
+<div class="icon-row">
+  <div class="icon-container">
+    <div class="checkerboard"><canvas id="icon128" width="128" height="128"></canvas></div>
+    <span>128 × 128 (store)</span>
+  </div>
+  <div class="icon-container">
+    <div class="on-white"><canvas id="icon48" width="48" height="48"></canvas></div>
+    <span>48 × 48 (management)</span>
+  </div>
+  <div class="icon-container">
+    <div class="on-dark"><canvas id="icon16" width="16" height="16"></canvas></div>
+    <span>16 × 16 (toolbar)</span>
+  </div>
+</div>
+
+<!-- Show on different backgrounds -->
+<h2 style="margin-top: 16px;">Context previews</h2>
+<div class="icon-row">
+  <div class="icon-container">
+    <div style="background:#fff; padding:16px; border-radius:8px; border:1px solid #e5e7eb;">
+      <canvas id="prev-white" width="128" height="128"></canvas>
+    </div>
+    <span>On white (CWS listing)</span>
+  </div>
+  <div class="icon-container">
+    <div style="background:#1e3a5f; padding:16px; border-radius:8px;">
+      <canvas id="prev-dark" width="128" height="128"></canvas>
+    </div>
+    <span>On navy (brand context)</span>
+  </div>
+  <div class="icon-container">
+    <div style="background:#f5f5f5; padding:16px; border-radius:8px; border:1px solid #e5e7eb;">
+      <canvas id="prev-grey" width="128" height="128"></canvas>
+    </div>
+    <span>On grey (Chrome toolbar)</span>
+  </div>
+</div>
+
+<div class="export-section">
+  <button onclick="exportPNG()">Download 128×128 PNG</button>
+</div>
+
+<script>
+// Wait for Poppins to load, then render
+document.fonts.ready.then(() => {
+  drawIcon(document.getElementById('icon128'), 128);
+  drawIcon(document.getElementById('icon48'), 48);
+  drawIcon(document.getElementById('icon16'), 16);
+  drawIcon(document.getElementById('prev-white'), 128);
+  drawIcon(document.getElementById('prev-dark'), 128);
+  drawIcon(document.getElementById('prev-grey'), 128);
+});
+
+function drawIcon(canvas, size) {
+  const ctx = canvas.getContext('2d');
+  const s = size; // shorthand
+  const cx = s / 2;
+  const cy = s / 2;
+
+  // Clear
+  ctx.clearRect(0, 0, s, s);
+
+  // === Circle with subtle gradient ===
+  const padding = s * 0.06;  // ~6% padding from edges
+  const radius = (s / 2) - padding;
+
+  // Main circle gradient — slight depth, darker at bottom-right
+  const circleGrad = ctx.createRadialGradient(
+    cx - radius * 0.25, cy - radius * 0.25, 0,
+    cx, cy, radius
+  );
+  circleGrad.addColorStop(0, '#24476e');   // slightly lighter top-left
+  circleGrad.addColorStop(0.7, '#1e3a5f'); // brand navy
+  circleGrad.addColorStop(1, '#162d4a');   // darker edge
+
+  ctx.beginPath();
+  ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+  ctx.fillStyle = circleGrad;
+  ctx.fill();
+
+  // Subtle outer ring/shadow for depth
+  if (size >= 48) {
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+    ctx.strokeStyle = 'rgba(0,0,0,0.12)';
+    ctx.lineWidth = size >= 128 ? 1.5 : 0.75;
+    ctx.stroke();
+  }
+
+  // === "JF" letterforms ===
+  // Scale font size relative to icon size
+  const fontSize = Math.round(s * 0.42);
+  const fontWeight = '700';
+  const fontFamily = "'Poppins', 'Segoe UI', Arial, sans-serif";
+
+  ctx.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillStyle = '#ffffff';
+
+  // Slight vertical offset — visually centre the "JF" (descender-free)
+  // Move up very slightly since J has a descender-like hook
+  const textY = cy + (s * 0.01);
+
+  // Letter spacing: draw J and F separately for precise control
+  const letterSpacing = s * 0.02; // tight but readable
+  const jWidth = ctx.measureText('J').width;
+  const fWidth = ctx.measureText('F').width;
+  const totalWidth = jWidth + fWidth + letterSpacing;
+
+  const jX = cx - totalWidth / 2 + jWidth / 2;
+  const fX = cx + totalWidth / 2 - fWidth / 2;
+
+  // Subtle text shadow for depth (only at larger sizes)
+  if (size >= 48) {
+    ctx.fillStyle = 'rgba(0,0,0,0.15)';
+    ctx.fillText('J', jX, textY + (size >= 128 ? 1.5 : 0.5));
+    ctx.fillText('F', fX, textY + (size >= 128 ? 1.5 : 0.5));
+  }
+
+  // White letters
+  ctx.fillStyle = '#ffffff';
+  ctx.fillText('J', jX, textY);
+  ctx.fillText('F', fX, textY);
+
+  // === Subtle inner highlight on circle (gloss effect) ===
+  if (size >= 48) {
+    const glossGrad = ctx.createLinearGradient(cx, cy - radius, cx, cy);
+    glossGrad.addColorStop(0, 'rgba(255,255,255,0.08)');
+    glossGrad.addColorStop(1, 'rgba(255,255,255,0)');
+
+    ctx.beginPath();
+    ctx.arc(cx, cy, radius - 1, 0, Math.PI * 2);
+    ctx.fillStyle = glossGrad;
+    ctx.fill();
+  }
+}
+
+function exportPNG() {
+  const canvas = document.getElementById('icon128');
+  const link = document.createElement('a');
+  link.download = 'truejobfit-icon-128.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+</script>
+
+</body>
+</html>
