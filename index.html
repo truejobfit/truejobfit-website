@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<!-- TODO: Replace EXTENSION_ID in 3 CTA links once Chrome Web Store submission is approved -->
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>True Job Fit - AI Job Coach for LinkedIn</title>
-<meta name="description" content="AI job coach built around your resume and the role you're viewing. Match scores, gap coaching, cover letters, and interview prep - right on the LinkedIn page.">
+<meta name="description" content="See how well you match any LinkedIn job in seconds. Match scores, ATS keyword checking, gap coaching, cover letters, and interview prep - all inside LinkedIn.">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -341,6 +340,7 @@ body {
 .feature-icon.interview { background: #fce7f3; }
 .feature-icon.tracker { background: #e0e7ff; }
 .feature-icon.privacy { background: #f1f5f9; }
+.feature-icon.ats { background: #ede9fe; }
 .feature-card h3 {
   font-size: 16px;
   font-weight: 700;
@@ -410,6 +410,8 @@ body {
 .tag-letter { background: #dbeafe; color: #1d4ed8; }
 .tag-interview { background: #fce7f3; color: #be185d; }
 .tag-dashboard { background: #e0e7ff; color: #4338ca; }
+.tag-ats { background: #ede9fe; color: #6d28d9; }
+.workflow-dot.dot-purple { background: #7c3aed; border-color: #ede9fe; }
 .workflow-content h3 {
   font-size: 17px;
   font-weight: 700;
@@ -663,7 +665,7 @@ body {
       <a href="#features">Features</a>
       <a href="#faq">FAQ</a>
       <a href="/how-to-get-api-key.html">API Key Setup</a>
-      <a href="https://chromewebstore.google.com/detail/EXTENSION_ID" class="btn-cta btn-cta-chrome" target="_blank">Add to Chrome - Free</a>
+      <a href="https://chromewebstore.google.com/detail/jinigkehihmofclobgfnhopiceheebfl" class="btn-cta btn-cta-chrome" target="_blank">Add to Chrome - Free</a>
     </div>
   </div>
 </nav>
@@ -674,7 +676,7 @@ body {
   <h1>Know your <span>match score</span> before you apply</h1>
   <p class="hero-sub">Upload your resume once. Every LinkedIn job you view instantly shows your match score, salary estimate, gap coaching, cover letter, and interview prep - without leaving the page. No tab-switching. No web apps. Everything inside LinkedIn.</p>
   <div class="hero-cta-row">
-    <a href="https://chromewebstore.google.com/detail/EXTENSION_ID" class="btn-cta btn-cta-chrome" target="_blank">
+    <a href="https://chromewebstore.google.com/detail/jinigkehihmofclobgfnhopiceheebfl" class="btn-cta btn-cta-chrome" target="_blank">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="21.17" y1="8" x2="12" y2="8"/><line x1="3.95" y1="6.06" x2="8.54" y2="14"/><line x1="10.88" y1="21.94" x2="15.46" y2="14"/></svg>
       Add to Chrome - Free
     </a>
@@ -738,6 +740,11 @@ body {
         <div class="feature-icon gap">🔑</div>
         <h3>Gap Coach with Bridge Language</h3>
         <p>98% of Fortune 500 companies use ATS to filter applications before a human sees them. Most rejections aren't about missing skills - they're about missing words. The Gap Coach shows which terms to adopt and gives you bridge language to reframe your experience in the job's own words.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon ats">🔍</div>
+        <h3>ATS Keyword Check</h3>
+        <p>See exactly which keywords from the job description are on your CV, which ones you have but described differently, and which are genuine gaps. Every keyword comes with a specific action: swap a word, weave a term into an existing bullet, or add to your skills section. No other tool tells you what to change and where.</p>
       </div>
       <div class="feature-card fade-up">
         <div class="feature-icon letter">✉️</div>
@@ -807,6 +814,23 @@ body {
           </div>
           <div class="workflow-screenshot">
             <img src="./screenshots/S2-GapCoach.png" alt="True Job Fit gap coach with bridge language" width="1280" height="800" loading="lazy">
+          </div>
+        </div>
+      </div>
+
+      <div class="workflow-step fade-up">
+        <div class="workflow-marker">
+          <div class="workflow-dot dot-purple"></div>
+          <div class="workflow-line"></div>
+        </div>
+        <div class="workflow-content">
+          <div class="workflow-tag tag-ats">ATS Keywords</div>
+          <h3>Know exactly which keywords to add, and where</h3>
+          <p>The ATS Keyword Check extracts every important keyword from the job description and checks it against your CV. For each keyword you have but described differently, it tells you the specific bullet to edit and the exact word to change. For genuine gaps, it tells you to prepare for interview questions instead of faking it.</p>
+          <div class="workflow-example">
+            <span class="we-reframe">Your CV says "member journey"</span>
+            <span class="we-arrow">→</span>
+            <span class="we-reframe highlight">SWAP: change to "consumer journey"</span>
           </div>
         </div>
       </div>
@@ -967,7 +991,7 @@ body {
 <section class="final-cta">
   <h2>Stop guessing. Start matching.</h2>
   <p>The only job matching tool that works directly inside LinkedIn - score, gap coach, cover letters, interview prep, and tracking without ever leaving the page.</p>
-  <a href="https://chromewebstore.google.com/detail/EXTENSION_ID" class="btn-cta-white" target="_blank">
+  <a href="https://chromewebstore.google.com/detail/jinigkehihmofclobgfnhopiceheebfl" class="btn-cta-white" target="_blank">
     Add to Chrome - Free
   </a>
 </section>
