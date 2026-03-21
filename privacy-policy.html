@@ -135,14 +135,10 @@ a { color: #2a4f7a; }
 <p>None of this data is transmitted to any server controlled by True Job Fit. There is no True Job Fit backend, database, or cloud storage.</p>
 
 <h2>API calls to OpenAI</h2>
-<p>When you analyse a job listing, generate a cover letter, request gap coaching, or generate interview prep, True Job Fit sends your CV profile and the job description text to OpenAI (<code>api.openai.com</code>), subject to <a href="https://openai.com/privacy" target="_blank" rel="noopener">OpenAI's privacy policy</a>. These requests:</p>
-<ul>
-  <li>Use your own API key — True Job Fit does not proxy, log, or intercept these calls</li>
-  <li>Are made directly from your browser to the provider's servers</li>
-  <li>Contain your CV profile text and the job description text necessary for analysis</li>
-  <li>Do not contain your name, email address, or API key in the request body</li>
-</ul>
-<p>True Job Fit does not store, transmit, or have access to your API key on any external server. Your API key is stored only in your browser's local storage.</p>
+<p>When you analyse a job listing, generate a cover letter, request gap coaching, or generate interview prep, True Job Fit sends your CV profile and the job description text to OpenAI (<code>api.openai.com</code>), subject to <a href="https://openai.com/privacy" target="_blank" rel="noopener">OpenAI's privacy policy</a>. How this works depends on whether you have configured your own API key:</p>
+<p><strong>If you have your own OpenAI API key (BYOK mode):</strong> All requests go directly from your browser to OpenAI using your key. True Job Fit does not proxy, log, or intercept these calls. Your API key is stored only in your browser's local storage and is never sent to any True Job Fit server.</p>
+<p><strong>If you are using free credits (no API key):</strong> Up to 3 job analyses are routed through a secure proxy server (<code>tjf-proxy.truejobfit.workers.dev</code>) operated by the developer, which forwards the request to OpenAI using a server-side key. See "Free credit proxy" below for full details.</p>
+<p>In both cases, requests contain your CV profile text and the job description text necessary for analysis. They do not contain your name, email address, or any payment information.</p>
 
 <h2>No analytics, tracking, or telemetry</h2>
 <p>True Job Fit does not use any external analytics services, telemetry, crash reporting, or usage tracking. No data about how you use the extension is sent to any server. Usage statistics (such as the number of jobs analysed per week) are stored locally in your browser for your own reference and are never transmitted externally.</p>
@@ -150,8 +146,22 @@ a { color: #2a4f7a; }
 <h2>No advertisements</h2>
 <p>True Job Fit does not display advertisements and is not affiliated with any advertising network.</p>
 
+<h2>Free credit proxy</h2>
+<p>True Job Fit offers up to 3 free job analyses for new users who have not yet set up their own OpenAI API key. These analyses are routed through a proxy server (<code>tjf-proxy.truejobfit.workers.dev</code>) operated by the developer and hosted on Cloudflare Workers.</p>
+<ul>
+  <li>The proxy forwards your request to OpenAI and returns the result. It does not store, log, or retain your CV text or job description content.</li>
+  <li>A random anonymous identifier (UUID) is stored in your browser and sent with each request solely to count how many free analyses have been used. This identifier is not linked to your name, email, or any other personal information.</li>
+  <li>A credit counter (0–3) is maintained in Cloudflare KV storage against your anonymous UUID. No other data is stored server-side.</li>
+  <li>Once you add your own OpenAI API key, the proxy is never contacted. All requests go directly from your browser to OpenAI.</li>
+</ul>
+
 <h2>Third-party services</h2>
-<p>The only external service True Job Fit communicates with is <strong>OpenAI API</strong> (<code>api.openai.com</code>). Communication occurs only when you explicitly trigger an analysis, cover letter generation, gap coaching reframe, or interview prep generation. No other third-party services are used.</p>
+<p>External services True Job Fit may communicate with:</p>
+<ul>
+  <li><strong>OpenAI API</strong> (<code>api.openai.com</code>) — all AI analysis, cover letter, and interview prep calls. Subject to <a href="https://openai.com/privacy" target="_blank" rel="noopener">OpenAI's privacy policy</a>.</li>
+  <li><strong>True Job Fit proxy</strong> (<code>tjf-proxy.truejobfit.workers.dev</code>) — free credit users only, as described above. Not contacted once you have your own API key.</li>
+</ul>
+<p>No other third-party services are used. There are no advertising networks, analytics services, or data brokers involved.</p>
 
 <h2>LinkedIn page content</h2>
 <p>True Job Fit reads the content of LinkedIn job listing pages in your browser to extract the job description, title, company name, and location. This content is used locally for analysis and is sent to OpenAI as described above. True Job Fit does not collect LinkedIn data in bulk, automate any actions on LinkedIn, or collect data from pages other than the job listing you are currently viewing.</p>
